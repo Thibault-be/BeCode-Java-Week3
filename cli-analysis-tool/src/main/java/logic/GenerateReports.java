@@ -38,11 +38,14 @@ public class GenerateReports {
   }
   
   //Returns the average of both the export and import of a specified month of a specified year.
-  public void getMonthlyAverage(String month, String year){
+  public ArrayList<Long> getMonthlyAverage(String month, String year){
     
     ArrayList<Long> exportImportTotal = getMonthlyTotal(month, year);
-    int exportCount = 0;
-    int importCount = 0;
+    
+    ArrayList<Long> exportImportAverageAndCount = new ArrayList<>();
+    
+    long exportCount = 0;
+    long importCount = 0;
     
     for (TradeData td : allData.getAllData()){
       if (td.getMonth().equals(month) && td.getYear().equals(year) && td.getMeasure().equals("$")){
@@ -54,8 +57,17 @@ public class GenerateReports {
     long exportAverage = exportImportTotal.get(0)/ exportCount;
     long importAverage = exportImportTotal.get(1) / importCount;
     
+    exportImportAverageAndCount.add(exportImportTotal.get(0));
+    exportImportAverageAndCount.add(exportAverage);
+    exportImportAverageAndCount.add(exportCount);
+    exportImportAverageAndCount.add(exportImportTotal.get(1));
+    exportImportAverageAndCount.add(importAverage);
+    exportImportAverageAndCount.add(importCount);
+    
     System.out.println("Average of exports for " + month + " of " + year + " amounted to " + exportAverage + " USD.");
     System.out.println("Average of imports for " + month + " of " + year + " amounted to " + importAverage + " USD.");
+    
+    return exportImportAverageAndCount;
   }
   
   
@@ -76,9 +88,29 @@ public class GenerateReports {
   
   }
   
+  //Provides an overview of all the monthly averages for a particular year, for both import and export.
+  // Then it gives the yearly average for both import and export.
   public void getYearlyAverage( String year){
-    System.out.println("in yearly average");
-  
+    
+    long yearTotalExportValue = 0;
+    long yearTotalImportValue = 0;
+    long exportCount = 0;
+    long importCount = 0;
+    
+    for (Months month : Months.values()){
+      
+      ArrayList<Long> monthData = getMonthlyAverage(month.month, year);
+      
+      yearTotalExportValue += monthData.get(0);
+      yearTotalImportValue += monthData.get(3);
+      
+      exportCount += monthData.get(2);
+      importCount += monthData.get(5);
+      
+    }
+    
+    System.out.println("The yearly average for " + year + " of exports is " + yearTotalExportValue / exportCount);
+    System.out.println("The yearly average for " + year + " of imports is " + yearTotalImportValue / importCount);
   }
   
   public void getOverview(){

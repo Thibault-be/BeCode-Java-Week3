@@ -67,7 +67,7 @@ public class CliAnalysis {
       return false;
     }
     
-    cmd = "yearly_total";       //REMOVE*********************
+    cmd = "yearly_average";       //REMOVE*********************
     
     if (! commandOptions.contains(cmd)){
       System.out.println("***This is not a valid command.***\n");
