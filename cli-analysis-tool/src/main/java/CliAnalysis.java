@@ -23,7 +23,7 @@ public class CliAnalysis {
     
     try{
       Files.lines(Paths.get("covid-effects.csv")).skip(1)
-          .map(line -> line.split(","))
+          .map(line -> line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)")) //complex regex to allow for commas in quoted data
           .forEach(splitLine ->{
             TradeData newData = new TradeData(
                 splitLine[0],
@@ -67,6 +67,8 @@ public class CliAnalysis {
       return false;
     }
     
+    cmd = "monthly_average";       //REMOVE*********************
+    
     if (! commandOptions.contains(cmd)){
       System.out.println("***This is not a valid command.***\n");
       return true;
@@ -83,7 +85,7 @@ public class CliAnalysis {
         System.out.println("yearly_average: overview of all the monthly averages for a particular year, for both import and export. Then it gives the yearly average for both import and export.");
         System.out.println("overview: all the unique values that span the data set: years, countries, commodities, transportation modes, and measures.\n");
         
-        System.out.println("for more information ");
+        System.out.println("for more information write 'help + command'.\n");
         return true;
       case "help monthly_total":
         Commands helpMonthlyTotal = Commands.HELP_MONTHLY_TOTAL;
@@ -114,7 +116,8 @@ public class CliAnalysis {
     //no help command or overview was entered, so we want to generate a report with user input.
     //create scanner so user can input requested data
     Scanner scanner = new Scanner(System.in);
-    String year = getYear(scanner);
+    //String year = getYear(scanner);
+    String year = "2019";                     //REMOVE**************************************
     
     //Yearly reports only need a year
     switch (cmd){
@@ -129,34 +132,28 @@ public class CliAnalysis {
     }
     
     //monthly reports need a year and a month
-    ArrayList<String> monthYear = getMonthAndYear(scanner);
-    String month = monthYear.get(0);
-    String yearAlt = monthYear.get(1);
+    //String month = getMonth(scanner);
+    String month = "December";           ///REMOVE**********************
     
     switch (cmd){
       case "monthly_total":
         Commands monthlyTotal = Commands.MONTHLY_TOTAL;
-        reports.getMonthlyTotal(month, yearAlt);
+        reports.getMonthlyTotal(month, year);
         break;
       case "monthly_average":
         Commands monthlyAverage = Commands.MONTHLY_AVERAGE;
-        reports.getMonthlyAverage(month, yearAlt);
+        reports.getMonthlyAverage(month, year);
         break;
     }
    return true;
   }
   
-  private static ArrayList<String> getMonthAndYear(Scanner scanner){
-    ArrayList<String> monthYear = new ArrayList<>();
-    System.out.println("Which month would you like to generate a report for?");
-    System.out.print("> ");
-    String month = scanner.nextLine();
+  private static String getMonth(Scanner scanner){
     System.out.println("Which year do you want to look at?");
     System.out.print("> ");
-    String year = scanner.nextLine();
-    monthYear.add(month);
-    monthYear.add(year);
-    return monthYear;
+    return scanner.nextLine();
+    
+    
   }
   
   private static String getYear(Scanner scanner){
