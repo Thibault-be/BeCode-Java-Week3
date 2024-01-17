@@ -1,6 +1,7 @@
 package logic;
 
 import domain.AllData;
+import domain.Months;
 import domain.TradeData;
 
 import java.math.BigInteger;
@@ -63,7 +64,15 @@ public class GenerateReports {
   // the yearly total for both import and export.
   public void getYearlyTotal(String year){
   
-  
+    long importTotal = 0;
+    long exportTotal = 0;
+    for (Months month : Months.values()){
+      ArrayList<Long> monthTotal = getMonthlyTotal(month.month, year);
+      importTotal += monthTotal.get(1);
+      exportTotal += monthTotal.get(0);
+    }
+    System.out.println("The total export value for " + year + " amounted to " + exportTotal + " USD.");
+    System.out.println("The total import value for " + year + " amounted to " + importTotal + " USD.");
   
   }
   
