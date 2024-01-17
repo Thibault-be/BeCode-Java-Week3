@@ -1,6 +1,7 @@
 import domain.AllData;
 import domain.TradeData;
 import domain.Commands;
+import logic.GenerateReports;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -38,10 +39,12 @@ public class CliAnalysis {
             );
             data.addData(newData);
           });
+      
     }
     catch (Exception e){
       System.out.println("Error: " + e.getMessage());
     }
+    GenerateReports reports = new GenerateReports(data);
     
     System.out.println("Welcome to the covid trade data analysis tool");
     System.out.println("Available commands are:");
@@ -52,12 +55,12 @@ public class CliAnalysis {
       System.out.println("Please type a command. Blank command leaves the program");
       System.out.print("> ");
       String cmd = scanner.nextLine();
-      flag = createCommand(cmd, commandOptions, data);
+      flag = createCommand(cmd, commandOptions, reports);
 
     }
   }
   
-  public static boolean createCommand(String cmd, List<String> commandOptions, AllData data){
+  private static boolean createCommand(String cmd, List<String> commandOptions, GenerateReports reports){
     
     if (cmd.isEmpty()) {
       System.out.println("exiting program.");
@@ -69,7 +72,8 @@ public class CliAnalysis {
       return true;
     }
     
-    switch (cmd){
+    //first check if any of the help commands or overview were entered. These don't need further user input.
+    switch (cmd) {
       case "help":
         Commands helpCmd = Commands.HELP;
         System.out.println("These are short descriptions of the available commands:\n");
@@ -78,6 +82,8 @@ public class CliAnalysis {
         System.out.println("yearly_total: overview of all the monthly totals for a particular year. This command returns the total of each month for both import and export and then gives the yearly total for both import and export.");
         System.out.println("yearly_average: overview of all the monthly averages for a particular year, for both import and export. Then it gives the yearly average for both import and export.");
         System.out.println("overview: all the unique values that span the data set: years, countries, commodities, transportation modes, and measures.\n");
+        
+        System.out.println("for more information ");
         return true;
       case "help monthly_total":
         Commands helpMonthlyTotal = Commands.HELP_MONTHLY_TOTAL;
@@ -99,19 +105,63 @@ public class CliAnalysis {
         Commands helpOverview = Commands.HELP_OVERVIEW;
         System.out.println(helpOverview.explanation);
         return true;
-      case "monthly_total":
-      
-      case "monthly_average":
-      
-      case "yearly_total":
-      
-      case "yearly_average":
-      
       case "overview":
+        Commands overview = Commands.OVERVIEW;
+        reports.getOverview();
+        return true;
     }
     
+    //no help command or overview was entered, so we want to generate a report with user input.
+    //create scanner so user can input requested data
+    Scanner scanner = new Scanner(System.in);
+    String year = getYear(scanner);
     
+    //Yearly reports only need a year
+    switch (cmd){
+      case "yearly_total":
+        Commands yearlyTotal = Commands.YEARLY_TOTAL;
+        reports.getYearlyTotal(year);
+        return true;
+      case "yearly_average":
+        Commands yearlyAverage = Commands.YEARLY_AVERAGE;
+        reports.getYearlyAverage(year);
+        return true;
+    }
+    
+    //monthly reports need a year and a month
+    ArrayList<String> monthYear = getMonthAndYear(scanner);
+    String month = monthYear.get(0);
+    String yearAlt = monthYear.get(1);
+    
+    switch (cmd){
+      case "monthly_total":
+        Commands monthlyTotal = Commands.MONTHLY_TOTAL;
+        reports.getMonthlyTotal(month, yearAlt);
+        break;
+      case "monthly_average":
+        Commands monthlyAverage = Commands.MONTHLY_AVERAGE;
+        reports.getMonthlyAverage(month, yearAlt);
+        break;
+    }
    return true;
   }
   
+  private static ArrayList<String> getMonthAndYear(Scanner scanner){
+    ArrayList<String> monthYear = new ArrayList<>();
+    System.out.println("Which month would you like to generate a report for?");
+    System.out.print("> ");
+    String month = scanner.nextLine();
+    System.out.println("Which year do you want to look at?");
+    System.out.print("> ");
+    String year = scanner.nextLine();
+    monthYear.add(month);
+    monthYear.add(year);
+    return monthYear;
+  }
+  
+  private static String getYear(Scanner scanner){
+    System.out.println("Which year do you want to look at?");
+    System.out.print("> ");
+    return scanner.nextLine();
+  }
 }
