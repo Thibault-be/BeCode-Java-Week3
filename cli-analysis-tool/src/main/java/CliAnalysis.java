@@ -67,7 +67,7 @@ public class CliAnalysis {
       return false;
     }
     
-    cmd = "yearly_average";       //REMOVE*********************
+    //cmd = "yearly_average";       //REMOVE*********************
     
     if (! commandOptions.contains(cmd)){
       System.out.println("***This is not a valid command.***\n");
@@ -116,8 +116,8 @@ public class CliAnalysis {
     //no help command or overview was entered, so we want to generate a report with user input.
     //create scanner so user can input requested data
     Scanner scanner = new Scanner(System.in);
-    //String year = getYear(scanner);
-    String year = "2019";                     //REMOVE**************************************
+    String year = getYear(scanner);
+    //String year = "2019";                     //REMOVE**************************************
     
     //Yearly reports only need a year
     switch (cmd){
@@ -132,8 +132,8 @@ public class CliAnalysis {
     }
     
     //monthly reports need a year and a month
-    //String month = getMonth(scanner);
-    String month = "December";           ///REMOVE**********************
+    String month = getMonth(scanner);
+    //String month = "December";           ///REMOVE**********************
     
     switch (cmd){
       case "monthly_total":
@@ -149,7 +149,7 @@ public class CliAnalysis {
   }
   
   private static String getMonth(Scanner scanner){
-    System.out.println("Which year do you want to look at?");
+    System.out.println("Which month do you want to look at?");
     System.out.print("> ");
     return scanner.nextLine();
     
