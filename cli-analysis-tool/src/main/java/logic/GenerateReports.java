@@ -55,8 +55,8 @@ public class GenerateReports {
     exportImportAverageAndCount.add(importAverage);
     exportImportAverageAndCount.add(importCount);
     
-    System.out.println("Average of exports for " + month + " of " + year + " amounted to " + exportAverage + " USD.");
-    System.out.println("Average of imports for " + month + " of " + year + " amounted to " + importAverage + " USD.");
+    System.out.println("Average of exports for " + month + " of " + year + " amounted to " + exportAverage /1000000 + " mln. USD.");
+    System.out.println("Average of imports for " + month + " of " + year + " amounted to " + importAverage /1000000 + " mln. USD.");
     
     return exportImportAverageAndCount;
   }
@@ -70,13 +70,13 @@ public class GenerateReports {
     long importTotal = 0;
     long exportTotal = 0;
     for (Months month : Months.values()){
-      ArrayList<Long> monthTotal = getMonthlyTotal(month.month, year);
+      System.out.println(month.month.toLowerCase());
+      ArrayList<Long> monthTotal = getMonthlyTotal(month.month.toLowerCase(), year);
       importTotal += monthTotal.get(1);
       exportTotal += monthTotal.get(0);
     }
-    System.out.println("The total export value for " + year + " amounted to " + exportTotal + " USD.");
-    System.out.println("The total import value for " + year + " amounted to " + importTotal + " USD.");
-  
+    System.out.println("The total export value for " + year + " amounted to " + exportTotal /1000000 + " mln USD.");
+    System.out.println("The total import value for " + year + " amounted to " + importTotal /1000000 + " mln USD.");
   }
   
   //Provides an overview of all the monthly averages for a particular year, for both import and export.
@@ -89,14 +89,16 @@ public class GenerateReports {
     long importCount = 0;
     
     for (Months month : Months.values()){
-      ArrayList<Long> monthData = getMonthlyAverage(month.month, year);
+      System.out.println("here");
+      ArrayList<Long> monthData = getMonthlyAverage(month.month.toLowerCase(), year);
       yearTotalExportValue += monthData.get(0);
       yearTotalImportValue += monthData.get(3);
       exportCount += monthData.get(2);
       importCount += monthData.get(5);
     }
-    System.out.println("The yearly average for " + year + " of exports is " + yearTotalExportValue / exportCount);
-    System.out.println("The yearly average for " + year + " of imports is " + yearTotalImportValue / importCount);
+    
+    System.out.println("The yearly average for " + year + " of exports is " + yearTotalExportValue / exportCount /1000000 + " mln USD.");
+    System.out.println("The yearly average for " + year + " of imports is " + yearTotalImportValue / importCount /1000000 + " mln USD.");
   }
   
   //Returns all the unique values that span the data set:

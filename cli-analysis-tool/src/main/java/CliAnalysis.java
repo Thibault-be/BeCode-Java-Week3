@@ -60,7 +60,6 @@ public class CliAnalysis {
       System.out.print("> ");
       String cmd = scanner.nextLine();
       flag = createCommand(cmd, commandOptions, reports);
-
     }
   }
   
@@ -149,8 +148,8 @@ public class CliAnalysis {
       case "monthly_total":
         Commands monthlyTotal = Commands.MONTHLY_TOTAL;
         ArrayList<Long> importExportMonthly = reports.getMonthlyTotal(month, year);
-        System.out.println("Exports for " + month + " of " + year + " amounted to " + importExportMonthly.get(0) + " USD.");
-        System.out.println("Imports for " + month + " of " + year + " amounted to " + importExportMonthly.get(1) + " USD.\n");
+        System.out.println("Exports for " + month + " of " + year + " amounted to " + importExportMonthly.get(0) /1000000 + " mln. USD.");
+        System.out.println("Imports for " + month + " of " + year + " amounted to " + importExportMonthly.get(1) /1000000 + " mln. USD.\n");
         break;
       case "monthly_average":
         Commands monthlyAverage = Commands.MONTHLY_AVERAGE;
