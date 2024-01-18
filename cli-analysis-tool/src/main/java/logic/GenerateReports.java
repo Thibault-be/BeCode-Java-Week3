@@ -4,14 +4,12 @@ import domain.AllData;
 import domain.Months;
 import domain.TradeData;
 
-import java.math.BigInteger;
-import java.sql.SQLOutput;
+import java.util.HashSet;
 import java.util.ArrayList;
 
 public class GenerateReports {
   
   private AllData allData;
-  
   
   public GenerateReports(AllData allData){
     this.allData = allData;
@@ -113,10 +111,44 @@ public class GenerateReports {
     System.out.println("The yearly average for " + year + " of imports is " + yearTotalImportValue / importCount);
   }
   
+  
+  //Returns all the unique values that span the data set:
+  // years, countries, commodities, transportation modes, and measures.
   public void getOverview(){
-    System.out.println("in get overview");
+    HashSet<String> uniqueYears = new HashSet<>();
+    HashSet<String> uniqueCountries = new HashSet<>();
+    HashSet<String> uniqueCommodities = new HashSet<>();
+    HashSet<String> uniqueTransportModes = new HashSet<>();
+    HashSet<String> uniqueMeasures = new HashSet<>();
+    
+    
+    for (TradeData td : allData.getAllData()){
+      uniqueYears.add(td.getYear());
+      uniqueCountries.add(td.getCountry());
+      uniqueCommodities.add(td.getCommodity());
+      uniqueTransportModes.add(td.getTransportMode());
+      uniqueMeasures.add(td.getMeasure());
+    }
+    
+    printUniqueValues(uniqueYears, "Years");
+    printUniqueValues(uniqueCountries, "Countries");
+    printUniqueValues(uniqueCommodities, "Commodities");
+    printUniqueValues(uniqueTransportModes, "Transport modes");
+    printUniqueValues(uniqueMeasures, "Measures");
     
   }
   
-  
+  public static void printUniqueValues(HashSet<String> hs, String label){
+    
+    StringBuilder bob = new StringBuilder();
+    
+    System.out.print(label + " > ");
+    for (String value : hs){
+      bob.append(value);
+      bob.append(" - ");
+    }
+    bob.deleteCharAt(bob.length()-1);
+    bob.deleteCharAt(bob.length()-1);
+    System.out.println(bob);
+  }
 }

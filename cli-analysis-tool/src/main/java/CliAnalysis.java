@@ -96,7 +96,7 @@ public class CliAnalysis {
         System.out.println(helpMonthlyAverage.explanation);
         return true;
       case "help yearly_total":
-        Commands helpYearlyTotal = Commands.YEARLY_TOTAL;
+        Commands helpYearlyTotal = Commands.HELP_YEARLY_TOTAL;
         System.out.println(helpYearlyTotal.explanation);
         return true;
       case "help yearly_average":
