@@ -1,4 +1,5 @@
 import domain.AllData;
+import domain.Months;
 import domain.TradeData;
 import domain.Commands;
 import logic.GenerateReports;
@@ -119,6 +120,11 @@ public class CliAnalysis {
     Scanner scanner = new Scanner(System.in);
     String year = getYear(scanner);
     
+    if (year.isEmpty()){
+      System.out.println("Query aborted. Exiting program");
+      return false;
+    }
+    
     //Yearly reports only need a year
     switch (cmd){
       case "yearly_total":
@@ -133,6 +139,11 @@ public class CliAnalysis {
     
     //monthly reports need a year and a month
     String month = getMonth(scanner);
+    
+    if (month.isEmpty()){
+      System.out.println("Query aborted. Exiting program.");
+      return false;
+    }
     
     switch (cmd){
       case "monthly_total":
@@ -150,14 +161,40 @@ public class CliAnalysis {
   }
   
   private static String getMonth(Scanner scanner){
-    System.out.println("Which month do you want to look at?");
-    System.out.print("> ");
-    return scanner.nextLine();
+    
+    while (true){
+      System.out.println("Which month do you want to look at? Blank input aborts the query.");
+      System.out.print("> ");
+      String userMonth = scanner.nextLine().toLowerCase();
+      
+      if(userMonth.isEmpty()) return "";
+      
+      for (Months month : Months.values()){
+        if (month.month.toLowerCase().equals(userMonth)){
+          return userMonth;
+        }
+      }
+      System.out.println("That wasn't a valid month. Please try again or press enter on blank input to abort.");
+    }
   }
   
   private static String getYear(Scanner scanner){
-    System.out.println("Which year do you want to look at?");
-    System.out.print("> ");
-    return scanner.nextLine();
+    
+    while (true){
+      
+      System.out.println("Which year do you want to look at? Leave blank and press enter to abort the query.");
+      System.out.print("> ");
+      
+      String userYear = scanner.nextLine();
+      if (userYear.isEmpty()) return "";
+      
+      if (userYear.matches("2015|2016|2017|2018|2019|2020|2021")){
+        return userYear;
+      }
+      else{
+        System.out.println("Only data for 2015 - 2016 - 2017 - 2018 - 2019 - 2020 - 2021 is available");
+        System.out.println("Please try again");
+      }
+    }
   }
 }

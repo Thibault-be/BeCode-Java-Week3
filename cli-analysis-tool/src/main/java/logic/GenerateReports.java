@@ -21,7 +21,7 @@ public class GenerateReports {
     long exportSum = 0;
     long importSum = 0;
     for (TradeData td : allData.getAllData()){
-      if (td.getMonth().equals(month) && td.getYear().equals(year) && td.getMeasure().equals("$")){
+      if (td.getMonth().toLowerCase().equals(month) && td.getYear().equals(year) && td.getMeasure().equals("$")){
           if (td.getDirection().equals("Exports")) exportSum += td.getValue();
           if (td.getDirection().equals("Imports")) importSum += td.getValue();
       }
@@ -39,7 +39,7 @@ public class GenerateReports {
     long exportCount = 0;
     long importCount = 0;
     for (TradeData td : allData.getAllData()){
-      if (td.getMonth().equals(month) && td.getYear().equals(year) && td.getMeasure().equals("$")){
+      if (td.getMonth().toLowerCase().equals(month) && td.getYear().equals(year) && td.getMeasure().equals("$")){
         if (td.getDirection().equals("Exports")) exportCount++;
         if (td.getDirection().equals("Imports")) importCount++;
       }
