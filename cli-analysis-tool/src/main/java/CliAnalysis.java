@@ -138,7 +138,9 @@ public class CliAnalysis {
     switch (cmd){
       case "monthly_total":
         Commands monthlyTotal = Commands.MONTHLY_TOTAL;
-        reports.getMonthlyTotal(month, year);
+        ArrayList<Long> importExportMonthly = reports.getMonthlyTotal(month, year);
+        System.out.println("Exports for " + month + " of " + year + " amounted to " + importExportMonthly.get(0) + " USD.");
+        System.out.println("Imports for " + month + " of " + year + " amounted to " + importExportMonthly.get(1) + " USD.\n");
         break;
       case "monthly_average":
         Commands monthlyAverage = Commands.MONTHLY_AVERAGE;

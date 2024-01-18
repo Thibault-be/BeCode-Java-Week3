@@ -30,8 +30,8 @@ public class GenerateReports {
     }
     exportImportTotal.add(exportSum);
     exportImportTotal.add(importSum);
-    System.out.println("Exports for " + month + " of " + year + " amounted to " + exportSum + " USD.");
-    System.out.println("Imports for " + month + " of " + year + " amounted to " + importSum + " USD.");
+//    System.out.println("Exports for " + month + " of " + year + " amounted to " + exportSum + " USD.");
+//    System.out.println("Imports for " + month + " of " + year + " amounted to " + importSum + " USD.");
     return exportImportTotal;
   }
   
