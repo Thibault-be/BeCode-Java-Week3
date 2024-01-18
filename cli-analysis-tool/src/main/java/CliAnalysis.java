@@ -22,6 +22,7 @@ public class CliAnalysis {
     }
     
     try{
+      //make each line in the csv a TradeData instance
       Files.lines(Paths.get("covid-effects.csv")).skip(1)
           .map(line -> line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)")) //complex regex to allow for commas in quoted data
           .forEach(splitLine ->{
@@ -37,6 +38,7 @@ public class CliAnalysis {
                 splitLine[8],
                 splitLine[9]
             );
+            //add all TradeData instances to AllData object
             data.addData(newData);
           });
       
@@ -44,6 +46,7 @@ public class CliAnalysis {
     catch (Exception e){
       System.out.println("Error: " + e.getMessage());
     }
+    
     GenerateReports reports = new GenerateReports(data);
     
     System.out.println("Welcome to the covid trade data analysis tool");
@@ -66,8 +69,6 @@ public class CliAnalysis {
       System.out.println("exiting program.");
       return false;
     }
-    
-    //cmd = "yearly_average";       //REMOVE*********************
     
     if (! commandOptions.contains(cmd)){
       System.out.println("***This is not a valid command.***\n");
@@ -117,7 +118,6 @@ public class CliAnalysis {
     //create scanner so user can input requested data
     Scanner scanner = new Scanner(System.in);
     String year = getYear(scanner);
-    //String year = "2019";                     //REMOVE**************************************
     
     //Yearly reports only need a year
     switch (cmd){
@@ -133,7 +133,6 @@ public class CliAnalysis {
     
     //monthly reports need a year and a month
     String month = getMonth(scanner);
-    //String month = "December";           ///REMOVE**********************
     
     switch (cmd){
       case "monthly_total":
@@ -154,8 +153,6 @@ public class CliAnalysis {
     System.out.println("Which month do you want to look at?");
     System.out.print("> ");
     return scanner.nextLine();
-    
-    
   }
   
   private static String getYear(Scanner scanner){
