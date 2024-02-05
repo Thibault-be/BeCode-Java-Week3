@@ -70,7 +70,6 @@ public class GenerateReports {
     long importTotal = 0;
     long exportTotal = 0;
     for (Months month : Months.values()){
-      System.out.println(month.month.toLowerCase());
       ArrayList<Long> monthTotal = getMonthlyTotal(month.month.toLowerCase(), year);
       importTotal += monthTotal.get(1);
       exportTotal += monthTotal.get(0);
@@ -89,7 +88,6 @@ public class GenerateReports {
     long importCount = 0;
     
     for (Months month : Months.values()){
-      System.out.println("here");
       ArrayList<Long> monthData = getMonthlyAverage(month.month.toLowerCase(), year);
       yearTotalExportValue += monthData.get(0);
       yearTotalImportValue += monthData.get(3);
